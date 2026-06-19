@@ -2,7 +2,7 @@
 
 image:
   # -- Image repository.
-  repository: ghcr.io/perryhuynh/decent-exporter
+  repository: ghcr.io/perryhuynh/reaprime-exporter
   # -- Overrides the image tag; defaults to chart appVersion.
   tag: ""
   # -- Pin image by digest. Set by release workflow for published charts.
