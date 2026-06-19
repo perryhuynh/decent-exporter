@@ -13,6 +13,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name != 'release' }}
 
+env:
+  MISE_NO_HOOKS: "1"
+
 jobs:
   versions:
     name: Versions
@@ -90,7 +93,7 @@ jobs:
         with:
           cache: false
           experimental: true
-          install_args: --locked --no-hooks
+          install_args: --locked
       - name: Pin the released image digest into the chart
         env:
           DIGEST: ${{ needs.release.outputs.digest }}
