@@ -2,7 +2,7 @@ apiVersion: v2
 name: decent-exporter
 description: Prometheus exporter for Reaprime-powered Decent espresso tablets
 type: application
-version: 0.2.0
+version: 0.2.1
 appVersion: 0.0.1
 home: https://github.com/perryhuynh/reaprime-exporter
 sources:

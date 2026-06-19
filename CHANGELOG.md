@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/perryhuynh/reaprime-exporter/compare/0.2.0...0.2.1) (2026-06-19)
+
+
+### Bug Fixes
+
+* **chart:** point image.repository at reaprime-exporter ([#7](https://github.com/perryhuynh/reaprime-exporter/issues/7)) ([bbab353](https://github.com/perryhuynh/reaprime-exporter/commit/bbab3531047292bfd79b4100c86c91f644a10045)), closes [#6](https://github.com/perryhuynh/reaprime-exporter/issues/6)
+
 ## [0.2.0](https://github.com/perryhuynh/reaprime-exporter/compare/0.1.0...0.2.0) (2026-06-19)
 
 
