@@ -21,7 +21,7 @@ Set `monitoring.dashboards.grafanaOperator.enabled=true` and provide `monitoring
 
 | Key | Type | Default | Description |
 | --- | --- | --- | --- |
-| `image.repository` | string | `ghcr.io/perryhuynh/decent-exporter` | Image repository. |
+| `image.repository` | string | `ghcr.io/perryhuynh/reaprime-exporter` | Image repository. |
 | `image.tag` | string | `""` | Overrides the image tag; defaults to chart appVersion. |
 | `image.digest` | string | `""` | Pin image by digest. Set by release workflow for published charts. |
 | `config.port` | int | `8080` | Exporter HTTP listen port. |
