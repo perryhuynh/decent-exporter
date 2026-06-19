@@ -119,7 +119,11 @@ func (c *Client) readStream(ctx context.Context, name, path string, parse func([
 	if err != nil {
 		return err
 	}
-	defer conn.Close()
+	defer func() {
+		if err := conn.Close(); err != nil {
+			slog.Debug("failed to close Reaprime stream", "stream", name, "error", err)
+		}
+	}()
 	c.store.SetStreamConnected(name, true)
 	slog.Info("connected Reaprime stream", "stream", name, "url", wsURL)
 
