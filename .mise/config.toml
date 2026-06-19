@@ -1,0 +1,55 @@
+[tools]
+go = "1.26.4"
+golangci-lint = "2.12.2"
+helm = "4.2.2"
+helm-docs = "1.14.2"
+"aqua:dadav/helm-schema" = "0.23.4"
+yq = "4.53.3"
+cosign = "3.1.1"
+lefthook = "2.1.9"
+zizmor = "1.25.2"
+
+[tasks.fmt]
+description = "Format Go code"
+run = "go fmt ./..."
+
+[tasks.lint]
+description = "Run Go lint"
+run = "golangci-lint run"
+
+[tasks.test]
+description = "Run Go tests"
+run = "go test ./... -coverprofile cover.out"
+
+[tasks.build]
+description = "Build the exporter"
+run = "go build -buildvcs=false ./cmd/decent-exporter"
+
+[tasks.generate]
+description = "Regenerate Helm docs and values schema"
+run = """
+helm-docs --chart-search-root=charts --log-level=warn
+helm-schema --chart-search-root charts/decent-exporter --skip-auto-generation required,additionalProperties --append-newline
+"""
+
+[tasks.generate-check]
+description = "Fail if generated files are stale"
+run = """
+mise run generate
+git diff --exit-code charts/decent-exporter/README.md charts/decent-exporter/values.schema.json
+"""
+
+[tasks.helm-lint]
+description = "Lint Helm chart"
+run = "helm lint charts/decent-exporter"
+
+[tasks.helm-template]
+description = "Render Helm chart"
+run = "helm template decent-exporter charts/decent-exporter"
+
+[tasks.helm-unittest]
+description = "Run helm-unittest chart tests"
+run = "helm unittest charts/decent-exporter"
+
+[hooks]
+postinstall = "lefthook install"

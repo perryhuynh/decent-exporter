@@ -1,0 +1,126 @@
+# Default values for decent-exporter.
+
+image:
+  # -- Image repository.
+  repository: ghcr.io/perryhuynh/decent-exporter
+  # -- Overrides the image tag; defaults to chart appVersion.
+  tag: ""
+  # -- Pin image by digest. Set by release workflow for published charts.
+  digest: ""
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+config:
+  # -- Exporter HTTP listen port.
+  port: 8080
+  # -- Base URL for the Reaprime tablet webserver.
+  reaprimeUrl: "http://192.168.50.49:8080"
+  # -- Log level: info or debug.
+  logLevel: info
+  # -- Maximum machine stream age before readiness fails.
+  readyMaxAge: 30s
+  # -- Initial stream reconnect delay.
+  reconnectMin: 1s
+  # -- Maximum stream reconnect delay.
+  reconnectMax: 30s
+
+env: {}
+extraEnv: []
+envFrom: []
+
+serviceAccount:
+  # -- Create a ServiceAccount.
+  create: true
+  # -- ServiceAccount name; empty uses chart fullname.
+  name: ""
+  # -- Mount the API token. The exporter never calls Kubernetes, so this is off by default.
+  automount: false
+  annotations: {}
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+resources: {}
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: metrics
+  initialDelaySeconds: 5
+  periodSeconds: 20
+
+readinessProbe:
+  httpGet:
+    path: /readyz
+    port: metrics
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+service:
+  type: ClusterIP
+  annotations: {}
+
+monitoring:
+  serviceMonitor:
+    # -- Create a Prometheus Operator ServiceMonitor.
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 10s
+    path: /metrics
+    labels: {}
+    annotations: {}
+    metricRelabelings: []
+    relabelings: []
+  dashboards:
+    # -- Render Grafana dashboard ConfigMaps.
+    enabled: false
+    # -- Namespace for dashboard objects; empty uses release namespace.
+    namespace: ""
+    annotations: {}
+    labels:
+      grafana_dashboard: "1"
+    grafanaOperator:
+      # -- Render GrafanaDashboard CRs for grafana-operator.
+      enabled: false
+      allowCrossNamespaceImport: true
+      folder: ""
+      resyncPeriod: 10m
+      matchLabels: {}
+
+replicaCount: 1
+
+deploymentAnnotations: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+priorityClassName: ""
+terminationGracePeriodSeconds: 30
+
+volumes: []
+volumeMounts: []
+initContainers: []
+
+tests:
+  image:
+    repository: mirror.gcr.io/curlimages/curl
+    tag: "8.20.0@sha256:b3f1fb2a51d923260350d21b8654bbc607164a987e2f7c84a0ac199a67df812a"
+    pullPolicy: IfNotPresent

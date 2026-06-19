@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "decent-exporter.fullname" . }}
+  labels:
+    {{- include "decent-exporter.labels" . | nindent 4 }}
+  {{- with .Values.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "decent-exporter.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "decent-exporter.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "decent-exporter.serviceAccountName" . }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . | quote }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- with .Values.initContainers }}
+      initContainers:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: decent-exporter
+          image: {{ include "decent-exporter.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: metrics
+              containerPort: {{ .Values.config.port }}
+              protocol: TCP
+          env:
+            - name: DECENT_EXPORTER_LISTEN_ADDRESS
+              value: ":{{ .Values.config.port }}"
+            - name: DECENT_EXPORTER_REAPRIME_URL
+              value: {{ .Values.config.reaprimeUrl | quote }}
+            - name: DECENT_EXPORTER_LOG_LEVEL
+              value: {{ .Values.config.logLevel | quote }}
+            - name: DECENT_EXPORTER_READY_MAX_AGE
+              value: {{ .Values.config.readyMaxAge | quote }}
+            - name: DECENT_EXPORTER_RECONNECT_MIN
+              value: {{ .Values.config.reconnectMin | quote }}
+            - name: DECENT_EXPORTER_RECONNECT_MAX
+              value: {{ .Values.config.reconnectMax | quote }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ tpl ($value | toString) $ | quote }}
+            {{- end }}
+            {{- with .Values.extraEnv }}
+            {{- tpl (toYaml .) $ | nindent 12 }}
+            {{- end }}
+          {{- with .Values.envFrom }}
+          envFrom:
+            {{- tpl (toYaml .) $ | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- tpl (toYaml .) $ | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,23 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["github>home-operations/renovate-config"],
+  customManagers: [
+    {
+      customType: "regex",
+      description: "Process Renovate annotations in Dockerfiles",
+      managerFilePatterns: ["/(^|/)Dockerfile$/"],
+      matchStrings: [
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\\n.+(:\\s|=)(?<currentValue>\\S+)",
+      ],
+      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+    },
+  ],
+  packageRules: [
+    {
+      description: ["Go toolchain group"],
+      groupName: "Go toolchain",
+      matchPackageNames: ["go", "golang"],
+    },
+  ],
+}

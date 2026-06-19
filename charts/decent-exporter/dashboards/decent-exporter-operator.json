@@ -1,0 +1,156 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "targets": [
+        {
+          "expr": "time() - decent_reaprime_stream_last_message_timestamp_seconds{namespace=~\"$namespace\", pod=~\"$pod\"}",
+          "legendFormat": "{{stream}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Stream Age",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "targets": [
+        {
+          "expr": "rate(decent_reaprime_stream_errors_total{namespace=~\"$namespace\", pod=~\"$pod\"}[5m])",
+          "legendFormat": "{{stream}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Stream Errors",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 7
+      },
+      "id": 3,
+      "targets": [
+        {
+          "expr": "increase(decent_reaprime_stream_reconnects_total{namespace=~\"$namespace\", pod=~\"$pod\"}[1h])",
+          "legendFormat": "{{stream}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Reconnects",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 7
+      },
+      "id": 4,
+      "targets": [
+        {
+          "expr": "rate(decent_reaprime_stream_messages_total{namespace=~\"$namespace\", pod=~\"$pod\"}[5m])",
+          "legendFormat": "{{stream}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Message Rate",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": [
+    "decent",
+    "operator"
+  ],
+  "templating": {
+    "list": [
+      {
+        "label": "Datasource",
+        "name": "datasource",
+        "query": "prometheus",
+        "refresh": 1,
+        "type": "datasource"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(decent_exporter_build_info, namespace)",
+        "includeAll": true,
+        "name": "namespace",
+        "query": {
+          "query": "label_values(decent_exporter_build_info, namespace)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "type": "query"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(decent_exporter_build_info{namespace=~\"$namespace\"}, pod)",
+        "includeAll": true,
+        "name": "pod",
+        "query": {
+          "query": "label_values(decent_exporter_build_info{namespace=~\"$namespace\"}, pod)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "title": "Decent Exporter Operator",
+  "uid": "decent-exporter-operator",
+  "version": 1
+}

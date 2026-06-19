@@ -1,0 +1,7 @@
+cover.out
+dist/
+*.tgz
+.DS_Store
+.claude/
+.agents/
+.codex/

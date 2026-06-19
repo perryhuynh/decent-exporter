@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "image": {
+      "type": "object",
+      "properties": {
+        "repository": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "digest": {
+          "type": "string"
+        },
+        "pullPolicy": {
+          "type": "string"
+        }
+      }
+    },
+    "config": {
+      "type": "object",
+      "properties": {
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "reaprimeUrl": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "logLevel": {
+          "type": "string",
+          "enum": [
+            "debug",
+            "info"
+          ]
+        },
+        "readyMaxAge": {
+          "type": "string"
+        },
+        "reconnectMin": {
+          "type": "string"
+        },
+        "reconnectMax": {
+          "type": "string"
+        }
+      }
+    },
+    "monitoring": {
+      "type": "object",
+      "properties": {
+        "serviceMonitor": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            }
+          }
+        },
+        "dashboards": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "grafanaOperator": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "matchLabels": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

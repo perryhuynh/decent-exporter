@@ -1,0 +1,12 @@
+suite: deployment
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: renders Reaprime URL env var
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[1].name
+          value: DECENT_EXPORTER_REAPRIME_URL
+      - equal:
+          path: spec.template.spec.containers[0].env[1].value
+          value: http://192.168.50.49:8080

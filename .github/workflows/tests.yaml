@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Tests
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["**.md"]
+  pull_request:
+    branches: [main]
+    paths-ignore: ["**.md"]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # renovate: datasource=github-releases depName=helm-unittest/helm-unittest
+  HELM_UNITTEST_VERSION: "v1.1.1"
+
+jobs:
+  go:
+    name: Go Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Setup Mise
+        uses: jdx/mise-action@dba19683ed58901619b14f395a24841710cb4925 # v4.1.0
+        with:
+          experimental: true
+          install_args: --locked
+      - name: Check go.mod tidiness
+        run: |
+          go mod tidy
+          git diff --exit-code go.mod go.sum
+      - name: Run tests
+        run: mise run test
+
+  helm:
+    name: Helm Unit Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Setup Mise
+        uses: jdx/mise-action@dba19683ed58901619b14f395a24841710cb4925 # v4.1.0
+        with:
+          experimental: true
+          install_args: --locked
+      - name: Install helm-unittest
+        run: helm plugin install https://github.com/helm-unittest/helm-unittest --version "${HELM_UNITTEST_VERSION}" --verify=false
+      - name: Run helm unit tests
+        run: mise run helm-unittest
