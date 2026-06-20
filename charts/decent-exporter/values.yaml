@@ -2,7 +2,7 @@
 
 image:
   # -- Image repository.
-  repository: ghcr.io/perryhuynh/reaprime-exporter
+  repository: ghcr.io/perryhuynh/decent-exporter
   # -- Overrides the image tag; defaults to chart appVersion.
   tag: ""
   # -- Pin image by digest. Set by release workflow for published charts.
@@ -18,7 +18,7 @@ config:
   # -- Exporter HTTP listen port.
   port: 8080
   # -- Base URL for the Reaprime tablet webserver.
-  reaprimeUrl: "http://192.168.50.49:8080"
+  decentUrl: "http://192.168.50.49:8080"
   # -- Log level: info or debug.
   logLevel: info
   # -- Maximum machine stream age before readiness fails.

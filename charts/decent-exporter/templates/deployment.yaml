@@ -53,8 +53,8 @@ spec:
           env:
             - name: DECENT_EXPORTER_LISTEN_ADDRESS
               value: ":{{ .Values.config.port }}"
-            - name: DECENT_EXPORTER_REAPRIME_URL
-              value: {{ .Values.config.reaprimeUrl | quote }}
+            - name: DECENT_EXPORTER_URL
+              value: {{ .Values.config.decentUrl | quote }}
             - name: DECENT_EXPORTER_LOG_LEVEL
               value: {{ .Values.config.logLevel | quote }}
             - name: DECENT_EXPORTER_READY_MAX_AGE

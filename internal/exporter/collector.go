@@ -3,7 +3,7 @@ package exporter
 import (
 	"strconv"
 
-	"github.com/perryhuynh/decent-exporter/internal/reaprime"
+	"github.com/perryhuynh/decent-exporter/internal/decent"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -14,7 +14,7 @@ type BuildInfo struct {
 }
 
 type Collector struct {
-	store *reaprime.Store
+	store *decent.Store
 	build BuildInfo
 
 	buildInfo           *prometheus.Desc
@@ -40,18 +40,18 @@ type Collector struct {
 	machineTransitions  *prometheus.Desc
 }
 
-func NewCollector(store *reaprime.Store, build BuildInfo) *Collector {
+func NewCollector(store *decent.Store, build BuildInfo) *Collector {
 	labels := prometheus.Labels{}
 	return &Collector{
 		store: store,
 		build: build,
 
 		buildInfo:           prometheus.NewDesc("decent_exporter_build_info", "Build information for decent-exporter.", []string{"version", "commit", "date"}, labels),
-		streamConnected:     prometheus.NewDesc("decent_reaprime_stream_connected", "Whether a Reaprime WebSocket stream is currently connected.", []string{"stream"}, labels),
-		streamLastMessage:   prometheus.NewDesc("decent_reaprime_stream_last_message_timestamp_seconds", "Unix timestamp of the last message received from a Reaprime stream.", []string{"stream"}, labels),
-		streamMessages:      prometheus.NewDesc("decent_reaprime_stream_messages_total", "Total messages received from a Reaprime stream since exporter start.", []string{"stream"}, labels),
-		streamReconnects:    prometheus.NewDesc("decent_reaprime_stream_reconnects_total", "Total successful Reaprime stream connections since exporter start.", []string{"stream"}, labels),
-		streamErrors:        prometheus.NewDesc("decent_reaprime_stream_errors_total", "Total Reaprime stream errors since exporter start.", []string{"stream"}, labels),
+		streamConnected:     prometheus.NewDesc("decent_stream_connected", "Whether a Decent WebSocket stream is currently connected.", []string{"stream"}, labels),
+		streamLastMessage:   prometheus.NewDesc("decent_stream_last_message_timestamp_seconds", "Unix timestamp of the last message received from a Decent stream.", []string{"stream"}, labels),
+		streamMessages:      prometheus.NewDesc("decent_stream_messages_total", "Total messages received from a Decent stream since exporter start.", []string{"stream"}, labels),
+		streamReconnects:    prometheus.NewDesc("decent_stream_reconnects_total", "Total successful Decent stream connections since exporter start.", []string{"stream"}, labels),
+		streamErrors:        prometheus.NewDesc("decent_stream_errors_total", "Total Decent stream errors since exporter start.", []string{"stream"}, labels),
 		machineState:        prometheus.NewDesc("decent_machine_state", "Current machine state as a one-hot gauge.", []string{"state", "substate"}, labels),
 		machineTemperature:  prometheus.NewDesc("decent_machine_temperature_celsius", "Machine temperatures in Celsius.", []string{"sensor"}, labels),
 		machineProfileFrame: prometheus.NewDesc("decent_machine_profile_frame", "Current machine profile frame.", nil, labels),
@@ -65,7 +65,7 @@ func NewCollector(store *reaprime.Store, build BuildInfo) *Collector {
 		displayBool:         prometheus.NewDesc("decent_display_state", "Display boolean state as one-hot gauges.", []string{"state"}, labels),
 		displayBrightness:   prometheus.NewDesc("decent_display_brightness_percent", "Display brightness percentage.", []string{"kind"}, labels),
 		deviceCount:         prometheus.NewDesc("decent_devices", "Number of devices by bounded type, state, and availability.", []string{"type", "state", "available"}, labels),
-		devicesScanning:     prometheus.NewDesc("decent_devices_scanning", "Whether Reaprime is scanning for devices.", []string{"phase", "error_kind"}, labels),
+		devicesScanning:     prometheus.NewDesc("decent_devices_scanning", "Whether Decent is scanning for devices.", []string{"phase", "error_kind"}, labels),
 		machineTransitions:  prometheus.NewDesc("decent_machine_state_transitions_total", "Machine state transitions observed since exporter start.", []string{"state"}, labels),
 	}
 }
@@ -148,7 +148,7 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 	}
 }
 
-func emitShot(ch chan<- prometheus.Metric, desc *prometheus.Desc, shot reaprime.ShotSettings) {
+func emitShot(ch chan<- prometheus.Metric, desc *prometheus.Desc, shot decent.ShotSettings) {
 	values := map[string]float64{
 		"steam_setting":             shot.SteamSetting,
 		"target_steam_temp":         shot.TargetSteamTemp,

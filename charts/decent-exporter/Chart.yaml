@@ -4,9 +4,9 @@ description: Prometheus exporter for Reaprime-powered Decent espresso tablets
 type: application
 version: 0.2.1
 appVersion: 0.0.1
-home: https://github.com/perryhuynh/reaprime-exporter
+home: https://github.com/perryhuynh/decent-exporter
 sources:
-  - https://github.com/perryhuynh/reaprime-exporter
+  - https://github.com/perryhuynh/decent-exporter
   - https://github.com/tadelv/reaprime
 keywords:
   - decent

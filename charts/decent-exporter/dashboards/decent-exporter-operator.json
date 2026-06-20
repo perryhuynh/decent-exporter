@@ -24,7 +24,7 @@
       "id": 1,
       "targets": [
         {
-          "expr": "time() - decent_reaprime_stream_last_message_timestamp_seconds{namespace=~\"$namespace\", pod=~\"$pod\"}",
+          "expr": "time() - decent_stream_last_message_timestamp_seconds{namespace=~\"$namespace\", pod=~\"$pod\"}",
           "legendFormat": "{{stream}}",
           "refId": "A"
         }
@@ -46,7 +46,7 @@
       "id": 2,
       "targets": [
         {
-          "expr": "rate(decent_reaprime_stream_errors_total{namespace=~\"$namespace\", pod=~\"$pod\"}[5m])",
+          "expr": "rate(decent_stream_errors_total{namespace=~\"$namespace\", pod=~\"$pod\"}[5m])",
           "legendFormat": "{{stream}}",
           "refId": "A"
         }
@@ -68,7 +68,7 @@
       "id": 3,
       "targets": [
         {
-          "expr": "increase(decent_reaprime_stream_reconnects_total{namespace=~\"$namespace\", pod=~\"$pod\"}[1h])",
+          "expr": "increase(decent_stream_reconnects_total{namespace=~\"$namespace\", pod=~\"$pod\"}[1h])",
           "legendFormat": "{{stream}}",
           "refId": "A"
         }
@@ -90,7 +90,7 @@
       "id": 4,
       "targets": [
         {
-          "expr": "rate(decent_reaprime_stream_messages_total{namespace=~\"$namespace\", pod=~\"$pod\"}[5m])",
+          "expr": "rate(decent_stream_messages_total{namespace=~\"$namespace\", pod=~\"$pod\"}[5m])",
           "legendFormat": "{{stream}}",
           "refId": "A"
         }

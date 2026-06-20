@@ -11,7 +11,7 @@ import (
 
 type Config struct {
 	ListenAddress string
-	ReaprimeURL   string
+	DecentURL   string
 	LogLevel      string
 	ReadyMaxAge   time.Duration
 	ReconnectMin  time.Duration
@@ -21,14 +21,14 @@ type Config struct {
 func Load() (Config, error) {
 	cfg := Config{
 		ListenAddress: envString("DECENT_EXPORTER_LISTEN_ADDRESS", ":8080"),
-		ReaprimeURL:   envString("DECENT_EXPORTER_REAPRIME_URL", "http://127.0.0.1:8080"),
+		DecentURL:   envString("DECENT_EXPORTER_URL", "http://127.0.0.1:8080"),
 		LogLevel:      envString("DECENT_EXPORTER_LOG_LEVEL", "info"),
 		ReadyMaxAge:   envDuration("DECENT_EXPORTER_READY_MAX_AGE", 30*time.Second),
 		ReconnectMin:  envDuration("DECENT_EXPORTER_RECONNECT_MIN", time.Second),
 		ReconnectMax:  envDuration("DECENT_EXPORTER_RECONNECT_MAX", 30*time.Second),
 	}
-	if _, err := url.ParseRequestURI(cfg.ReaprimeURL); err != nil {
-		return Config{}, fmt.Errorf("DECENT_EXPORTER_REAPRIME_URL: %w", err)
+	if _, err := url.ParseRequestURI(cfg.DecentURL); err != nil {
+		return Config{}, fmt.Errorf("DECENT_EXPORTER_URL: %w", err)
 	}
 	if cfg.ReconnectMin <= 0 {
 		return Config{}, errors.New("DECENT_EXPORTER_RECONNECT_MIN must be positive")
