@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/perryhuynh/decent-exporter/internal/config"
+	"github.com/perryhuynh/decent-exporter/internal/decent"
 	"github.com/perryhuynh/decent-exporter/internal/exporter"
-	"github.com/perryhuynh/decent-exporter/internal/reaprime"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -39,8 +39,8 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
-	store := reaprime.NewStore(time.Now)
-	client := reaprime.NewClient(cfg.ReaprimeURL, store, reaprime.ClientOptions{
+	store := decent.NewStore(time.Now)
+	client := decent.NewClient(cfg.DecentURL, store, decent.ClientOptions{
 		ReconnectMin: cfg.ReconnectMin,
 		ReconnectMax: cfg.ReconnectMax,
 	})
@@ -65,7 +65,7 @@ func main() {
 			_, _ = w.Write([]byte("ok\n"))
 			return
 		}
-		http.Error(w, "waiting for fresh Reaprime data", http.StatusServiceUnavailable)
+		http.Error(w, "waiting for fresh Decent data", http.StatusServiceUnavailable)
 	})
 
 	server := &http.Server{
@@ -75,7 +75,7 @@ func main() {
 	}
 
 	go func() {
-		slog.Info("starting decent-exporter", "listen", cfg.ListenAddress, "reaprime_url", cfg.ReaprimeURL)
+		slog.Info("starting decent-exporter", "listen", cfg.ListenAddress, "decent_url", cfg.DecentURL)
 		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			slog.Error("http server failed", "error", err)
 			stop()

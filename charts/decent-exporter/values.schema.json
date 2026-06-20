@@ -27,7 +27,7 @@
           "minimum": 1,
           "maximum": 65535
         },
-        "reaprimeUrl": {
+        "decentUrl": {
           "type": "string",
           "pattern": "^https?://"
         },

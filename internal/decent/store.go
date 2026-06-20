@@ -1,4 +1,4 @@
-package reaprime
+package decent
 
 import (
 	"sync"

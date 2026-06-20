@@ -1,4 +1,4 @@
-package reaprime
+package decent
 
 import (
 	"context"
@@ -83,7 +83,7 @@ func (c *Client) runStream(ctx context.Context, name, path string, parse func([]
 		err := c.readStream(ctx, name, path, parse)
 		if err != nil && ctx.Err() == nil {
 			c.store.StreamError(name)
-			slog.Warn("Reaprime stream disconnected", "stream", name, "error", err)
+			slog.Warn("Decent stream disconnected", "stream", name, "error", err)
 		}
 
 		jitter := time.Duration(rand.Int64N(int64(backoff / 2)))
@@ -114,11 +114,11 @@ func (c *Client) readStream(ctx context.Context, name, path string, parse func([
 	}
 	defer func() {
 		if err := conn.Close(); err != nil {
-			slog.Debug("failed to close Reaprime stream", "stream", name, "error", err)
+			slog.Debug("failed to close Decent stream", "stream", name, "error", err)
 		}
 	}()
 	c.store.SetStreamConnected(name, true)
-	slog.Info("connected Reaprime stream", "stream", name, "url", wsURL)
+	slog.Info("connected Decent stream", "stream", name, "url", wsURL)
 
 	for {
 		_, payload, err := conn.ReadMessage()
@@ -128,7 +128,7 @@ func (c *Client) readStream(ctx context.Context, name, path string, parse func([
 		}
 		if err := parse(payload); err != nil {
 			c.store.StreamError(name)
-			slog.Debug("failed to parse Reaprime stream message", "stream", name, "error", err)
+			slog.Debug("failed to parse Decent stream message", "stream", name, "error", err)
 		}
 	}
 }

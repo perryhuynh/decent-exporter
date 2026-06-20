@@ -54,7 +54,7 @@
       },
       "targets": [
         {
-          "expr": "max(decent_reaprime_stream_connected{stream=\"machine\", namespace=~\"$namespace\", pod=~\"$pod\"})",
+          "expr": "max(decent_stream_connected{stream=\"machine\", namespace=~\"$namespace\", pod=~\"$pod\"})",
           "refId": "A"
         }
       ],
