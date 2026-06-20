@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.0](https://github.com/perryhuynh/decent-exporter/compare/0.2.1...1.0.0) (2026-06-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* env var renamed to DECENT_EXPORTER_URL and metrics renamed from decent_reaprime_stream_* to decent_stream_*; update deployments, dashboards, and alerts.
+
+### Features
+
+* **metrics:** replace raw pressure/flow/scale with per-shot summaries ([#9](https://github.com/perryhuynh/decent-exporter/issues/9)) ([278580b](https://github.com/perryhuynh/decent-exporter/commit/278580be39721ea1ac899ceb44da2424cf4d59d0))
+
+
+### Code Refactoring
+
+* rename reaprime identifiers to decent ([#11](https://github.com/perryhuynh/decent-exporter/issues/11)) ([f2334a1](https://github.com/perryhuynh/decent-exporter/commit/f2334a182cf63d8b0bde03125250c13e696a2255))
+
 ## [0.2.1](https://github.com/perryhuynh/reaprime-exporter/compare/0.2.0...0.2.1) (2026-06-19)
 
 
