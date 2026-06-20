@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/perryhuynh/decent-exporter/internal/config"
-	"github.com/perryhuynh/decent-exporter/internal/exporter"
 	"github.com/perryhuynh/decent-exporter/internal/decent"
+	"github.com/perryhuynh/decent-exporter/internal/exporter"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
