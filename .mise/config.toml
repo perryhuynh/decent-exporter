@@ -7,7 +7,7 @@ helm-docs = "1.14.2"
 yq = "4.53.3"
 cosign = "3.1.1"
 lefthook = "2.1.9"
-zizmor = "1.25.2"
+zizmor = "1.26.1"
 
 [tasks.fmt]
 description = "Format Go code"
