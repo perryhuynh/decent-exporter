@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/perryhuynh/decent-exporter/compare/1.0.0...1.1.0) (2026-06-25)
+
+
+### Features
+
+* **container:** update image mirror.gcr.io/curlimages/curl (8.20.0 → 8.21.0) ([#13](https://github.com/perryhuynh/decent-exporter/issues/13)) ([4faa234](https://github.com/perryhuynh/decent-exporter/commit/4faa234a92dc1ea05f4c7d70aab5c4ebe568019d))
+
 ## [1.0.0](https://github.com/perryhuynh/decent-exporter/compare/0.2.1...1.0.0) (2026-06-20)
 
 
